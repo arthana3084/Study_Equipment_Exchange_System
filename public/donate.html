@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Donate Equipment</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="brand">Study Equipment</div>
+      <nav>
+        <a href="choose.html" class="link">Back</a>
+        <button id="btn-logout" class="link">Logout</button>
+      </nav>
+    </header>
+
+    <main class="centered">
+      <div class="panel small">
+        <h2 id="form-header">Donate Equipment</h2>
+        <form id="donateForm">
+          <input type="text" id="title" placeholder="Item name" required />
+          <textarea id="description" placeholder="Short description"></textarea>
+          <select id="category" required></select>
+          <button type="submit" class="btn-primary">Submit Donation</button>
+        </form>
+        <div id="msg" class="msg"></div>
+        <div
+          id="post-action-prompt"
+          class="actions"
+          style="display: none; margin-top: 20px"
+        >
+          <p>Donation submitted! Would you like to donate another item?</p>
+          <button class="btn-primary" onclick="resetForm()">
+            Yes, Donate More
+          </button>
+          <a href="choose.html" class="btn-outline" style="text-align: center"
+            >No, Go Back to Choose Action</a
+          >
+        </div>
+      </div>
+    </main>
+
+    <script>
+      const donateForm = document.getElementById("donateForm");
+      const msgDiv = document.getElementById("msg");
+      const promptDiv = document.getElementById("post-action-prompt");
+      const header = document.getElementById("form-header");
+
+      async function loadCats() {
+        const res = await fetch("/api/categories");
+
+        // Check for 401 Unauthorized status
+        if (res.status === 401) {
+          location.href = "login.html?intent=donate"; // Redirect back to login with intent
+          return;
+        }
+
+        const data = await res.json();
+        const sel = document.getElementById("category");
+        sel.innerHTML = '<option value="">Select Category</option>';
+        data.categories.forEach((c) => {
+          const op = document.createElement("option");
+          op.value = c.id;
+          op.textContent = c.name;
+          sel.appendChild(op);
+        });
+      }
+
+      function resetForm() {
+        donateForm.reset();
+        donateForm.style.display = "flex";
+        promptDiv.style.display = "none";
+        header.textContent = "Donate Equipment";
+        msgDiv.textContent = "";
+      }
+
+      donateForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const payload = {
+          title: document.getElementById("title").value.trim(),
+          description: document.getElementById("description").value.trim(),
+          category_id: document.getElementById("category").value,
+        };
+        const res = await fetch("/api/donate", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        });
+
+        if (res.status === 401) {
+          location.href = "login.html?intent=donate";
+          return;
+        }
+
+        const data = await res.json();
+        msgDiv.textContent = "";
+
+        if (data.ok) {
+          header.textContent = "Success!";
+          donateForm.style.display = "none";
+          promptDiv.style.display = "flex";
+        } else {
+          msgDiv.textContent = data.error || "Error submitting donation.";
+          msgDiv.style.color = "crimson";
+        }
+      });
+
+      document
+        .getElementById("btn-logout")
+        .addEventListener("click", async () => {
+          await fetch("/api/logout", { method: "POST" });
+          location.href = "index.html";
+        });
+
+      loadCats();
+    </script>
+  </body>
+</html>

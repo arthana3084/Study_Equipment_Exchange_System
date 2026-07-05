@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Items</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="brand">Study Equipment</div>
+      <nav>
+        <a href="categories.html" class="link">Back</a>
+        <button id="btn-logout" class="link">Logout</button>
+      </nav>
+    </header>
+
+    <main class="centered">
+      <div class="panel">
+        <h2 id="catname"></h2>
+        <div id="items" class="grid">
+          <p id="loading-msg">Loading items...</p>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      const params = new URLSearchParams(location.search);
+      const catId = params.get("cat");
+      const catName = decodeURIComponent(params.get("name") || "");
+      document.getElementById("catname").textContent = catName;
+
+      async function loadItems() {
+        const wrap = document.getElementById("items");
+        // Optional: show a loading message while fetching
+        wrap.innerHTML = "<p>Fetching available items...</p>";
+
+        const res = await fetch("/api/items?category_id=" + catId);
+        const data = await res.json();
+
+        wrap.innerHTML = ""; // Clear the loading message
+
+        // --- ENHANCED LOGIC: Display clear message if no items are returned ---
+        if (!data.items || data.items.length === 0) {
+          wrap.innerHTML = `
+            <div style="text-align: center; padding: 20px; grid-column: 1 / -1;">
+              <h3>Nothing Available Yet! 😔</h3>
+              <p>This category is empty. Please check back later.</p>
+            </div>
+          `;
+          return;
+        }
+        // ----------------------------------------------------------------------
+
+        data.items.forEach((it) => {
+          const el = document.createElement("div");
+          el.className = "card";
+          el.innerHTML = `
+          <h3>${it.title}</h3>
+          <p>Condition: ${it.condition || "N/A"} | Quantity: ${
+            it.quantity || 1
+          }</p>
+          <p>${it.description || ""}</p>
+          <small>Donor: ${it.donor_name || "Unknown"}</small><br>
+          <button onclick="req(${it.id})">Request</button>
+        `;
+          wrap.appendChild(el);
+        });
+      }
+
+      async function req(id) {
+        if (!confirm("Send request for this item?")) return;
+        const res = await fetch("/api/request", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ item_id: id }),
+        });
+        const data = await res.json();
+        alert(
+          data.ok
+            ? "Request sent! The item status is now 'requested'."
+            : data.error || "Error"
+        );
+        if (data.ok) loadItems();
+      }
+
+      document
+        .getElementById("btn-logout")
+        .addEventListener("click", async () => {
+          await fetch("/api/logout", { method: "POST" });
+          location.href = "index.html";
+        });
+
+      loadItems();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Login</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="brand">Study Equipment</div
+      <nav><a href="index.html" class="link">Home</a></nav>
+    </header>
+
+    <main class="centered">
+      <div class="panel small">
+        <h2>Log In</h2>
+        <p id="msg" style="color: crimson"></p>
+        <form id="loginForm">
+          <label for="email">Email</label>
+          <input type="email" id="email" required />
+
+          <label for="password">Password</label>
+          <input type="password" id="password" required />
+
+          <button type="submit" class="btn-primary">Log In</button>
+        </form>
+        <p>Don't have an account? <a href="register.html">Register here</a></p>
+      </div>
+    </main>
+
+    <script>
+      const params = new URLSearchParams(location.search);
+      const intent = params.get("intent") || "";
+
+      document
+        .getElementById("loginForm")
+        .addEventListener("submit", async (e) => {
+          e.preventDefault();
+          const email = document.getElementById("email").value.trim();
+          const password = document.getElementById("password").value.trim();
+          
+          const res = await fetch("/api/login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email, password }),
+          });
+          
+          const data = await res.json();
+          const msg = document.getElementById("msg");
+          
+          if (data.ok) {
+            // SUCCESSFUL LOGIN: Explicitly redirect to prevent blank page failure
+            if (intent === "donate") location.href = "donate.html";
+            else if (intent === "request") location.href = "categories.html";
+            else location.href = "choose.html";
+          } else {
+            // LOGIN FAILED: Display error
+            let errorMessage = data.error || "Login failed";
+            if (errorMessage.includes("Invalid credentials")) {
+                errorMessage += ". If you are a new user, please register.";
+            }
+            msg.textContent = errorMessage;
+            msg.style.color = "crimson";
+          }
+        });
+    </script>
+  </body>
+</html>

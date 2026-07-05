@@ -1,0 +1,284 @@
+/* Using a common modern sans-serif stack */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap');
+
+:root {
+  --color-primary: #3876FD; /* Vibrant Blue */
+  --color-secondary: #00bcd4; /* Cyan/Teal Accent */
+  --color-dark: #1e3a5f; /* Deep Navy Header */
+  --color-accent: #28a745; /* Success Green */
+  --color-text: #2c3e50; /* Darker Text */
+  --color-background: #f0f8ff; /* Very light blue background */
+  --color-white: #ffffff;
+  --color-light-gray: #dce4ee;
+  --panel-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+}
+
+/* Background animation for a dynamic, subtle effect */
+@keyframes background-pan {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+body {
+  font-family: 'Roboto', sans-serif;
+  background: var(--color-background);
+  /* Apply subtle gradient for depth */
+  background: linear-gradient(-45deg, var(--color-background), #eaf4ff);
+  background-size: 400% 400%;
+  animation: background-pan 120s ease infinite; /* Slow background animation */
+  margin: 0;
+  color: var(--color-text);
+  line-height: 1.6;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* --- Global Typography & Structure --- */
+h1, h2 {
+  color: var(--color-dark);
+  margin-bottom: 0.5em;
+  font-weight: 700;
+}
+h2 {
+  font-size: 2rem;
+  padding-bottom: 12px;
+  margin-bottom: 35px;
+  position: relative;
+}
+/* Enhanced modern underline effect for H2 */
+h2::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 4px; /* Thicker line */
+    background: var(--color-primary);
+    border-radius: 2px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+}
+a {
+    color: var(--color-primary);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+a:hover {
+    color: var(--color-secondary);
+}
+
+/* --- Top Bar (Header) --- */
+.topbar {
+  background: var(--color-dark);
+  color: var(--color-white);
+  padding: 18px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2); /* Deeper shadow */
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+.topbar .brand { 
+  font-weight: 900; /* Extra bold */
+  font-size: 24px; 
+  color: var(--color-secondary); /* Accent color for the brand */
+  letter-spacing: 0.5px;
+}
+.topbar .link, .topbar button.link {
+  background: none;
+  border: none;
+  color: var(--color-white);
+  cursor: pointer;
+  padding: 10px 18px;
+  border-radius: 20px; /* Pill shape for links */
+  transition: all 0.3s ease;
+  font-weight: 500;
+}
+.topbar .link:hover, .topbar button.link:hover {
+  background: var(--color-secondary);
+  color: var(--color-dark);
+  transform: translateY(-1px);
+}
+
+/* --- Hero Section (Index) --- */
+.hero {
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+/* --- Panels and Containers --- */
+.centered {
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 50px 20px; /* More vertical space */
+}
+.panel {
+  background: var(--color-white);
+  border-radius: 16px; /* Super rounded corners */
+  padding: 50px;
+  box-shadow: var(--panel-shadow);
+  width: 90%;
+  max-width: 800px;
+  text-align: center;
+  transition: transform 0.3s ease;
+}
+.panel:hover {
+    transform: perspective(1000px) rotateX(1deg); /* Slight 3D hover */
+}
+.panel.small { 
+  max-width: 450px; 
+  padding: 40px;
+}
+
+/* --- Forms and Inputs --- */
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  text-align: left;
+}
+input[type="text"], 
+input[type="email"], 
+input[type="password"],
+textarea,
+select {
+  padding: 16px; /* Extra vertical space */
+  border: 1px solid var(--color-light-gray);
+  border-radius: 10px;
+  font-size: 1rem;
+  width: 100%;
+  box-sizing: border-box;
+  transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+  box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.08); 
+}
+
+/* Dynamic focus state with bright accent */
+input:focus, textarea:focus, select:focus {
+  border-color: var(--color-secondary);
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(0, 188, 212, 0.2), inset 0 1px 4px rgba(0, 0, 0, 0.1); 
+  background-color: #fafffe; /* Very light color change on focus */
+}
+textarea {
+  min-height: 140px;
+}
+
+/* --- Buttons --- */
+.btn-primary, .btn-outline {
+  font-size: 1.05rem;
+  font-weight: 700;
+  padding: 14px 30px;
+  border-radius: 30px; /* Pill shape for main buttons */
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.btn-primary {
+  background: var(--color-primary);
+  color: var(--color-white);
+  border: none;
+  box-shadow: 0 8px 15px rgba(56, 118, 253, 0.4); /* Primary button shadow */
+}
+.btn-primary:hover { 
+  background: var(--color-secondary); 
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 12px 20px rgba(0, 188, 212, 0.5); /* Shadow changes color/intensity */
+}
+
+.btn-outline {
+  background: var(--color-white);
+  color: var(--color-primary);
+  border: 2px solid var(--color-primary);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.08);
+}
+.btn-outline:hover { 
+  background: var(--color-primary); 
+  color: var(--color-white);
+  border-color: var(--color-secondary); /* Subtle border color change */
+  transform: translateY(-1px);
+}
+
+.btn-primary.big {
+  font-size: 1.3rem;
+  padding: 20px 40px;
+}
+
+/* --- Messages --- */
+.msg {
+  padding: 15px;
+  margin-top: 25px;
+  border-radius: 8px;
+  font-weight: 500;
+  border-left: 5px solid; /* Strong border for emphasis */
+}
+.msg[style*="green"] {
+  background: #e6ffed;
+  color: #1a6435;
+  border-left-color: var(--color-accent);
+}
+.msg[style*="crimson"] {
+  background: #fff0f3;
+  color: #a03c54;
+  border-left-color: #d9534f;
+}
+
+/* --- Grid and Cards (For Categories/Items) --- */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Larger cards */
+  gap: 30px; /* More space between cards */
+  margin-top: 30px;
+}
+
+.card {
+  background: var(--color-white);
+  border: 1px solid var(--color-light-gray);
+  border-radius: 12px;
+  padding: 30px;
+  text-align: left;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+  transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+  overflow: hidden;
+  position: relative;
+}
+.card:hover {
+  transform: translateY(-8px) scale(1.03); /* Significant lift and slight scale */
+  box-shadow: 0 15px 35px rgba(56, 118, 253, 0.3); /* Primary color shadow glow */
+  border-color: var(--color-primary);
+}
+
+.card h3 {
+  margin-top: 0;
+  color: var(--color-primary);
+  font-size: 1.4em;
+  border-bottom: 2px solid var(--color-light-gray);
+  padding-bottom: 10px;
+  margin-bottom: 15px;
+}
+
+.card button {
+  margin-top: 20px;
+  width: 100%;
+  padding: 12px 20px;
+}
+
+/* Animation on load (optional, but a nice touch) */
+@keyframes fadeInSlide {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+main .panel {
+    animation: fadeInSlide 0.7s ease-out;
+}

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Study Equipment Donation & Request</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="brand">Study Equipment Donation & Request</div>
+      <nav><button id="btn-start" class="btn-primary">Get Started</button></nav>
+    </header>
+
+    <main class="hero">
+      <div class="panel">
+        <h1>Study Equipment Donation & Request</h1>
+        <p>Share what you no longer need. Find the equipment you do.</p>
+        <button id="get-started" class="btn-primary big">Get Started</button>
+      </div>
+    </main>
+
+    <script>
+      // Function to navigate to the choice page
+      const goToChoose = () => {
+        location.href = "choose.html";
+      };
+
+      // Listener for the main button
+      document
+        .getElementById("get-started")
+        .addEventListener("click", goToChoose);
+
+      // Listener for the topbar button
+      document
+        .getElementById("btn-start")
+        .addEventListener("click", goToChoose);
+    </script>
+  </body>
+</html>

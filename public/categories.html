@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Categories</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="brand">Study Equipment</div>
+      <nav>
+        <a href="choose.html" class="link">Back</a>
+        <button id="btn-logout" class="link">Logout</button>
+      </nav>
+    </header>
+
+    <main class="centered">
+      <div class="panel">
+        <h2>Browse Categories</h2>
+        <div id="cats" class="grid">
+          <p style="text-align: center">Loading categories...</p>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      async function fetchCats() {
+        const res = await fetch("/api/categories");
+
+        // CRITICAL FIX: Explicitly check for an unauthorized response (401)
+        if (res.status === 401) {
+          // This forces the blank screen to redirect to the login page
+          location.href = "login.html";
+          return;
+        }
+
+        const data = await res.json();
+        // The script targets the <div> with id="cats"
+        const wrap = document.getElementById("cats");
+        wrap.innerHTML = "";
+
+        // Prevents blank page if no categories exist
+        if (!data.categories || data.categories.length === 0) {
+          wrap.innerHTML =
+            '<h3 style="text-align:center;">No categories are available right now.</h3>';
+          return;
+        }
+
+        data.categories.forEach((c) => {
+          const el = document.createElement("div");
+          el.className = "card";
+          el.innerHTML = `<h3>${c.name}</h3><button onclick="openCat(${
+            c.id
+          },'${encodeURIComponent(c.name)}')">Browse</button>`;
+          wrap.appendChild(el);
+        });
+      }
+      function openCat(id, name) {
+        location.href = `items.html?cat=${id}&name=${name}`;
+      }
+      document
+        .getElementById("btn-logout")
+        .addEventListener("click", async () => {
+          await fetch("/api/logout", { method: "POST" });
+          location.href = "index.html";
+        });
+
+      fetchCats();
+    </script>
+  </body>
+</html>

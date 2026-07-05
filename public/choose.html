@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Choose Action</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="brand">Study Equipment</div>
+      <nav><a href="index.html" class="link">Home</a></nav>
+    </header>
+
+    <main class="centered">
+      <div class="panel small">
+        <h2>What would you like to do?</h2>
+        <div class="actions">
+          <button class="btn-primary" onclick="go('donate')">
+            DONATE EQUIPMENT
+          </button>
+          <button class="btn-primary" onclick="go('request')">
+            REQUEST EQUIPMENT
+          </button>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      function go(type) {
+        // Redirects to login, passing the intent in the URL parameter
+        location.href = "login.html?intent=" + type;
+      }
+    </script>
+  </body>
+</html>

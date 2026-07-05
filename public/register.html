@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Register</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="brand">Study Equipment</div>
+      <nav><a href="index.html" class="link">Home</a></nav>
+    </header>
+
+    <main class="centered">
+      <div class="panel small">
+        <h2>Create Account</h2>
+        <form id="registerForm">
+          <input type="text" id="name" placeholder="Full name" required />
+          <input type="email" id="email" placeholder="Email" required />
+          <input
+            type="password"
+            id="password"
+            placeholder="Password"
+            required
+          />
+          <input type="text" id="phone" placeholder="Phone (optional)" />
+          <select id="role">
+            <option value="requester">Requester</option>
+            <option value="donor">Donor</option>
+          </select>
+          <button class="btn-primary" type="submit">Register</button>
+        </form>
+        <div id="msg" class="msg"></div>
+      </div>
+    </main>
+
+    <script>
+      document
+        .getElementById("registerForm")
+        .addEventListener("submit", async (e) => {
+          e.preventDefault();
+
+          const emailInput = document.getElementById("email");
+
+          const payload = {
+            name: document.getElementById("name").value.trim(),
+            email: emailInput.value.trim(),
+            password: document.getElementById("password").value,
+            phone: document.getElementById("phone").value.trim(),
+            role: document.getElementById("role").value,
+          };
+
+          const msg = document.getElementById("msg");
+          msg.textContent = "";
+
+          const res = await fetch("/api/register", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload),
+          });
+
+          const data = await res.json();
+
+          if (data.ok) {
+            msg.textContent = "Registered. Redirecting to login...";
+            msg.style.color = "green";
+
+            // Pass the registered email to the login page
+            const registeredEmail = encodeURIComponent(payload.email);
+            setTimeout(
+              () =>
+                (location.href = `login.html?registered_email=${registeredEmail}`),
+              900
+            );
+          } else {
+            msg.textContent = data.error || "Registration failed";
+            msg.style.color = "crimson";
+          }
+        });
+    </script>
+  </body>
+</html>

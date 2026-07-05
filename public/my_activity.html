@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>My Activity</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="brand">Study Equipment</div>
+      <nav>
+        <a href="choose.html" class="link">Back</a>
+        <button id="btn-logout" class="link">Logout</button>
+      </nav>
+    </header>
+
+    <main class="centered">
+      <div class="panel small">
+        <h2>My Activity</h2>
+        <p>View the items you have donated or requested.</p>
+        <div class="actions">
+          <button
+            class="btn-outline"
+            onclick="location.href='my_donations.html'"
+          >
+            My Donations
+          </button>
+          <button
+            class="btn-outline"
+            onclick="location.href='my_requests.html'"
+          >
+            My Requests
+          </button>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      document
+        .getElementById("btn-logout")
+        .addEventListener("click", async () => {
+          await fetch("/api/logout", { method: "POST" });
+          location.href = "index.html";
+        });
+    </script>
+  </body>
+</html>
