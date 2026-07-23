@@ -2,9 +2,9 @@
 
 ### AI-Powered Campus Resource Sharing & Sustainability Platform
 
-CampusHub is an AI-powered campus resource sharing platform designed to make academic resources more accessible, affordable, and sustainable within educational institutions. The platform enables students to buy, sell, rent, exchange, and donate academic resources such as textbooks, laboratory equipment, project components, calculators, and other study essentials.
+CampusHub is an AI-enabled campus resource sharing platform designed to make academic resources more accessible, affordable, and sustainable within educational institutions. The platform enables students to buy, sell, rent, exchange, and donate academic resources such as textbooks, laboratory equipment, project components, calculators, and other study essentials.
 
-The current implementation provides the core resource-sharing platform, while the ongoing major project focuses on integrating Artificial Intelligence and Machine Learning to deliver personalized recommendations, intelligent search, price estimation, fraud detection, and sustainability analytics.
+The current implementation provides the core resource-sharing platform, originally developed as one of our academic projects. The ongoing B.Tech major project builds upon this foundation by integrating Artificial Intelligence and Machine Learning to deliver personalized recommendations, intelligent search, price estimation, fraud detection, and sustainability analytics.
 
 > **Project Status:** 🚧 Under Active Development (B.Tech Major Project)
 
@@ -53,9 +53,9 @@ The following AI-powered modules are currently being designed and implemented:
 
 - Python
 - Flask
-- Machine Learning
+- Scikit-learn
 - Natural Language Processing (NLP)
-- Recommendation System
+- Recommendation Systems
 - REST APIs
 
 ---
